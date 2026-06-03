@@ -46,8 +46,8 @@ export class User {
   updatedAt!: Date;
 
   @OneToMany(() => Address, (address) => address.user)
-  addresses: Address[] = [];
+  addresses: Address[];
 
   @OneToMany(() => RefreshToken, (token) => token.user)
-  refreshTokens: RefreshToken[] = [];
+  refreshTokens: RefreshToken[];
 }
