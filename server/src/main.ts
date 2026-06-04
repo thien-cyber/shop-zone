@@ -13,6 +13,9 @@ async function bootstrap() {
   // Kích hoạt Cookie Parser (Bắt buộc phải có để đọc/ghi HttpOnly Cookie)
   app.use(cookieParser());
 
+  // Thiết lập global prefix /api cho tất cả endpoints
+  app.setGlobalPrefix('api');
+
   // Cấu hình CORS nghiêm ngặt (Thay URL frontend của bạn vào đây khi deploy)
   app.enableCors({
     origin: true, // Cho phép trong môi trường local dev, production nên chỉ định domain cụ thể
