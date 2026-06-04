@@ -37,7 +37,7 @@ export class User {
   providerId!: string;
 
   @Column({ name: 'is_active', default: true })
-  isActive: boolean = false;
+  isActive: boolean = true;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt!: Date;

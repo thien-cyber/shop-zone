@@ -30,7 +30,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const ipAddress = req.ip || '';
+    const ipAddress = (req.ip || '') as string;
     const userAgent = req.headers['user-agent'] || '';
 
     const result = await this.authService.login(
@@ -46,6 +46,11 @@ export class AuthController {
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày
     });
+
+    return {
+      accessToken: result.accessToken,
+      user: result.user,
+    };
   }
 
   // 3. API Xoay vòng token (Refresh Token)
@@ -92,5 +97,38 @@ export class AuthController {
     // Xóa Cookie ở trình duyệt client
     res.clearCookie('refresh_token');
     return { message: 'Đăng xuất thành công' };
+  }
+
+  @Public()
+  @Post('google')
+  async googleLogin(
+    @Body('token') token: string,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    if (!token) {
+      throw new UnauthorizedException('Mã Token Google không được để trống');
+    }
+
+    const ipAddress = (req.ip || '') as string;
+    const userAgent = (req.headers['user-agent'] || '') as string;
+
+    const result = await this.authService.loginGoogle(
+      token,
+      ipAddress,
+      userAgent,
+    );
+
+    res.cookie('refresh_token', result.rawRefreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return {
+      accessToken: result.accessToken,
+      user: result.user,
+    };
   }
 }

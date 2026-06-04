@@ -12,7 +12,10 @@ import { ConfigService } from '@nestjs/config';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
+import { OAuth2Client } from 'google-auth-library';
+import { AuthProvider, UserRole } from '../../common/enums/shopzone.enum';
 
+const googleClient = new OAuth2Client();
 @Injectable()
 export class AuthService {
   constructor(
@@ -153,6 +156,59 @@ export class AuthService {
     if (tokenEntity) {
       tokenEntity.isRevoked = true;
       await this.refreshTokenRepository.save(tokenEntity);
+    }
+  }
+
+  async loginGoogle(token: string, ipAddress: string, userAgent: string) {
+    try {
+      const clientId = this.configService.get<string>('GOOGLE_CLIENT_ID');
+
+      // 1. Gửi mã Token lên Google Auth Library để verify tính hợp lệ
+      const ticket = await googleClient.verifyIdToken({
+        idToken: token,
+        audience: clientId,
+      });
+
+      const payload = ticket.getPayload();
+      if (!payload || !payload.email) {
+        throw new UnauthorizedException('Xác thực tài khoản Google thất bại');
+      }
+
+      const { email, name, picture, sub } = payload;
+
+      // 2. Kiểm tra xem user này đã tồn tại trong Postgres chưa
+      let user = await this.userRepository.findOne({ where: { email } });
+
+      if (!user) {
+        // Nếu chưa có tài khoản, tự động tạo mới tài khoản dạng khách hàng mạng xã hội
+        user = this.userRepository.create({
+          email,
+          fullName: name || 'Google User',
+          avatarUrl: picture || undefined,
+          provider: AuthProvider.GOOGLE,
+          providerId: sub,
+          role: UserRole.CUSTOMER,
+          isActive: true,
+        });
+        user = await this.userRepository.save(user);
+      } else if (user.provider !== AuthProvider.GOOGLE) {
+        // Nếu có email trùng nhưng đăng ký bằng tài khoản Local từ trước -> Ép liên kết hoặc chặn tùy nghiệp vụ
+        user.provider = AuthProvider.GOOGLE;
+        user.providerId = sub;
+        if (!user.avatarUrl && picture) user.avatarUrl = picture;
+        await this.userRepository.save(user);
+      }
+
+      if (!user.isActive) {
+        throw new UnauthorizedException('Tài khoản của bạn đã bị khóa ngầm');
+      }
+
+      // 3. Tái sử dụng luồng login truyền thống để cấp Access Token & HttpOnly Cookie Refresh Token
+      return this.login(user, ipAddress, userAgent);
+    } catch (error) {
+      throw new UnauthorizedException(
+        'Mã xác thực Google không hợp lệ hoặc đã hết hạn',
+      );
     }
   }
 }
