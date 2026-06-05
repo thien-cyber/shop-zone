@@ -59,9 +59,67 @@ export interface HomeVoucher {
   desc: string;
 }
 
+export interface NestedCategory {
+  id: number;
+  name: string;
+  slug: string;
+  children?: NestedCategory[]; // Đệ quy chứa các danh mục con cấp 2
+}
+
+export interface CategoryNode extends Category {
+  children?: Category[];
+}
+
 // ============================================================
 // EXPORTED MOCK DATA USING SEEDED PLACEHOLDERS
 // ============================================================
+
+export const MOCK_NESTED_CATEGORIES: NestedCategory[] = [
+  {
+    id: 1,
+    name: 'Thiết Bị Điện Tử',
+    slug: 'thiet-bi-dien-tu',
+    children: [
+      { id: 11, name: 'Điện thoại Smartphone', slug: 'smartphone' },
+      { id: 12, name: 'Máy tính bảng Tablet', slug: 'tablet' },
+      { id: 13, name: 'Phụ kiện công nghệ', slug: 'phu-kien-cong-nghe' },
+      { id: 14, name: 'Loa & Tai nghe', slug: 'loa-tai-nghe' },
+    ],
+  },
+  {
+    id: 2,
+    name: 'Máy Tính & Laptop',
+    slug: 'may-tinh-laptop',
+    children: [
+      { id: 21, name: 'Laptop Văn Phòng', slug: 'laptop-van-phong' },
+      { id: 22, name: 'Laptop Gaming', slug: 'laptop-gaming' },
+      { id: 23, name: 'Linh kiện PC', slug: 'linh-kien-pc' },
+      { id: 24, name: 'Màn hình máy tính', slug: 'man-hinh' },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Thời Trang Nam & Nữ',
+    slug: 'thoi-trang',
+    children: [
+      { id: 31, name: 'Áo thun & Áo sơ mi', slug: 'ao-nam-nu' },
+      { id: 32, name: 'Quần Jeans & Kaki', slug: 'quan-nam-nu' },
+      { id: 33, name: 'Giày thể thao Sneaker', slug: 'giay-the-thao' },
+      { id: 34, name: 'Túi xách & Ví da', slug: 'tui-xach-vi' },
+    ],
+  },
+  {
+    id: 4,
+    name: 'Sức Khỏe & Sắc Đẹp',
+    slug: 'suc-khoe-sac-dep',
+    children: [
+      { id: 41, name: 'Chăm sóc da mặt', slug: 'cham-soc-da-mat' },
+      { id: 42, name: 'Trang điểm Make-up', slug: 'trang-diem' },
+      { id: 43, name: 'Nước hoa chính hãng', slug: 'nuoc-hoa' },
+      { id: 44, name: 'Thực phẩm chức năng', slug: 'thuc-pham-chuc-nang' },
+    ],
+  },
+];
 
 export const MOCK_BANNERS: Banner[] = [
   {
@@ -468,5 +526,68 @@ export const MOCK_HOME_VOUCHERS: HomeVoucher[] = [
     discount_value: 30000,
     min_order_value: 150000,
     desc: "Mã miễn phí vận chuyển toàn quốc đơn từ 150k",
+  },
+];
+
+export const MOCK_CATEGORY_TREE: CategoryNode[] = [
+  {
+    id: 100,
+    name: 'Thiết Bị Điện Tử',
+    slug: 'thiet-bi-dien-tu',
+    thumbnail_url: '',
+    parent_id: null,
+    children: [
+      { id: 101, name: 'Điện thoại di động', slug: 'dien-thoai', thumbnail_url: '', parent_id: 100 },
+      { id: 102, name: 'Laptop & Máy tính', slug: 'laptop', thumbnail_url: '', parent_id: 100 },
+      { id: 103, name: 'Đồng hồ thông minh', slug: 'dong-ho', thumbnail_url: '', parent_id: 100 },
+      { id: 104, name: 'Phụ kiện công nghệ', slug: 'phu-kien-so', thumbnail_url: '', parent_id: 100 },
+    ],
+  },
+  {
+    id: 200,
+    name: 'Thời Trang & Xu Hướng',
+    slug: 'thoi-trang',
+    thumbnail_url: '',
+    parent_id: null,
+    children: [
+      { id: 201, name: 'Thời trang Nam', slug: 'thoi-trang-nam', thumbnail_url: '', parent_id: 200 },
+      { id: 202, name: 'Thời trang Nữ', slug: 'thoi-trang-nu', thumbnail_url: '', parent_id: 200 },
+      { id: 203, name: 'Giày thể thao & Sneakers', slug: 'giay-sneaker', thumbnail_url: '', parent_id: 200 },
+      { id: 204, name: 'Balo & Túi xách', slug: 'balo-tui-xach', thumbnail_url: '', parent_id: 200 },
+    ],
+  },
+  {
+    id: 300,
+    name: 'Nhà Cửa & Đời Sống',
+    slug: 'nha-cua-doi-song',
+    thumbnail_url: '',
+    parent_id: null,
+    children: [
+      { id: 301, name: 'Gia dụng thông minh', slug: 'gia-dung', thumbnail_url: '', parent_id: 300 },
+      { id: 302, name: 'Dụng cụ nhà bếp', slug: 'nha-bep', thumbnail_url: '', parent_id: 300 },
+      { id: 303, name: 'Đèn LED & Trang trí', slug: 'den-trang-tri', thumbnail_url: '', parent_id: 300 },
+    ],
+  },
+  {
+    id: 400,
+    name: 'Sức Khỏe & Làm Đẹp',
+    slug: 'suc-khoe-lam-dep',
+    thumbnail_url: '',
+    parent_id: null,
+    children: [
+      { id: 401, name: 'Mỹ phẩm chăm sóc da', slug: 'my-pham', thumbnail_url: '', parent_id: 400 },
+      { id: 402, name: 'Dụng cụ thể thao', slug: 'the-thao', thumbnail_url: '', parent_id: 400 },
+    ],
+  },
+  {
+    id: 500,
+    name: 'Giải Trí & Giáo Dục',
+    slug: 'giai-tri-giao-duc',
+    thumbnail_url: '',
+    parent_id: null,
+    children: [
+      { id: 501, name: 'Sách tư duy & Kỹ năng', slug: 'sach', thumbnail_url: '', parent_id: 500 },
+      { id: 502, name: 'Đồ chơi trí tuệ', slug: 'do-choi', thumbnail_url: '', parent_id: 500 },
+    ],
   },
 ];
