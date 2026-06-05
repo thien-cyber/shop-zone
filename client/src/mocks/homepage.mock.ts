@@ -202,6 +202,7 @@ export const MOCK_CATEGORIES: Category[] = [
     slug: "do-choi",
     thumbnail_url: "https://picsum.photos/seed/toys/200/200",
   },
+  
 ];
 
 export const MOCK_FLASH_SALE: FlashSale = {

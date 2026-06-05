@@ -6,9 +6,13 @@ import ProductSection from "../components/home/ProductSection";
 import VoucherZone from "@/components/home/VoucherZone";
 import BrandSection from "@/components/home/BrandSection";
 import {
-  MOCK_BANNERS, MOCK_CATEGORIES, MOCK_FLASH_SALE,
-  MOCK_NEW_PRODUCTS, MOCK_BEST_SELLERS,
-  MOCK_BRANDS, MOCK_HOME_VOUCHERS,
+  MOCK_BANNERS,
+  MOCK_CATEGORIES,
+  MOCK_FLASH_SALE,
+  MOCK_NEW_PRODUCTS,
+  MOCK_BEST_SELLERS,
+  MOCK_BRANDS,
+  MOCK_HOME_VOUCHERS,
 } from "../mocks/homepage.mock";
 
 export const revalidate = 3600;
@@ -18,9 +22,6 @@ export default function HomePage() {
     <main className="min-h-screen bg-white">
       {/* 1. Gây ấn tượng */}
       <HeroBanner banners={MOCK_BANNERS} />
-
-      {/* 2. Tạo tin tưởng ngay sau banner */}
-      <IncentivesBar />
 
       {/* 3. Tạo urgency — user còn đang hứng khởi */}
       <FlashSaleSection flashSale={MOCK_FLASH_SALE} />
@@ -44,12 +45,12 @@ export default function HomePage() {
         viewAllLink="/products?sort=best_seller"
         bgGray={true}
       />
-
+      <BrandSection brands={MOCK_BRANDS} />
       {/* 7. Voucher sau khi user đã "thèm" sản phẩm */}
       <VoucherZone vouchers={MOCK_HOME_VOUCHERS} />
 
-      {/* 8. Củng cố thương hiệu — không cản luồng mua trên đầu */}
-      <BrandSection brands={MOCK_BRANDS} />
+      {/* 2. Tạo tin tưởng ngay sau banner */}
+      <IncentivesBar />
     </main>
   );
 }
