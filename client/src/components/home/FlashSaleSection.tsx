@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Flame, Star, ShoppingCart, ArrowRight } from "lucide-react";
@@ -194,7 +193,7 @@ export default function FlashSaleSection({ flashSale }: FlashSaleSectionProps) {
             );
           })}
 
-          {/* [HÀNH ĐỘNG MỚI]: Thẻ báo hiệu "Còn nữa" xuất hiện ở cuối danh sách dành cho Mobile/Tablet */}
+          {/* Thẻ báo hiệu "Còn nữa" xuất hiện ở cuối danh sách dành cho Mobile/Tablet */}
           {remainingCount > 0 && (
             <Link
               href="/flash-sale"

@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import Link from "next/link";
 import { Ticket, Check, ChevronDown } from "lucide-react";
@@ -90,7 +89,7 @@ export default function VoucherZone({ vouchers }: VoucherZoneProps) {
           })}
         </div>
 
-        {/* [HÀNH ĐỘNG MỚI]: Liên kết text nhảy về trung tâm Voucher của Sàn */}
+        {/* Liên kết text nhảy về trung tâm Voucher của Sàn */}
         {remainingCount > 0 && (
           <div className="mt-6 flex justify-center">
             <Link

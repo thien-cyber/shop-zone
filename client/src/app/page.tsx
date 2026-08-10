@@ -20,16 +20,12 @@ export const revalidate = 3600;
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-white">
-      {/* 1. Gây ấn tượng */}
       <HeroBanner banners={MOCK_BANNERS} />
 
-      {/* 3. Tạo urgency — user còn đang hứng khởi */}
       <FlashSaleSection flashSale={MOCK_FLASH_SALE} />
 
-      {/* 4. Hướng dẫn khám phá */}
       <CategorySection categories={MOCK_CATEGORIES} />
 
-      {/* 5. Sản phẩm mới */}
       <ProductSection
         title="Sản phẩm mới nhất"
         subtitle="Cập nhật xu hướng công nghệ và thời trang đi đầu hệ thống"
@@ -37,7 +33,6 @@ export default function HomePage() {
         viewAllLink="/products?sort=newest"
       />
 
-      {/* 6. Social proof — tăng quyết định mua */}
       <ProductSection
         title="Bán chạy nhất"
         subtitle="Danh mục các sản phẩm được khách hàng tin dùng và chọn lựa nhiều nhất"
@@ -45,11 +40,11 @@ export default function HomePage() {
         viewAllLink="/products?sort=best_seller"
         bgGray={true}
       />
+
       <BrandSection brands={MOCK_BRANDS} />
-      {/* 7. Voucher sau khi user đã "thèm" sản phẩm */}
+
       <VoucherZone vouchers={MOCK_HOME_VOUCHERS} />
 
-      {/* 2. Tạo tin tưởng ngay sau banner */}
       <IncentivesBar />
     </main>
   );
